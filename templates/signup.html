@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circuiters- Signup</title>
+      <!-- slider stylesheet -->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.1.3/assets/owl.carousel.min.css'" />
+
+    <!-- bootstrap core css -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}" />
+
+    <!-- fonts style -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Poppins:400,700&display=swap" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet" />
+    <!-- responsive style -->
+    <link href="{% static 'css/responsive.css' %}" rel="stylesheet" />
+    <style>
+        body{
+            background-color: rgb(240, 255, 248);
+            font-family:'Poppins', sans-serif;
+            
+        }
+        h1{
+            font-family:'Poppins', sans-serif;
+            font-size: 300%;
+            font-weight:40;
+        }
+        h1:hover{
+            color: #24d278;
+            font-weight:200;
+            
+            
+        }
+        .contact_section input {
+            width: 30%;
+        }
+    </style>
+</head>
+<body>
+{% if msg %}
+  <div class="alert alert-danger alert-dismissible">
+    <a href="" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong>Opps !</strong>{{msg}}.
+  </div>
+{% elif lmsg %}
+  <div class="alert alert-success alert-dismissible">
+    <a href="" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong>!</strong>{{lmsg}}.
+  </div>
+{% endif %}
+    <center><h1>Circuiters</h1>
+    <p>"For all your electrical and electronic device repairs. We offer unbeatable prices with guaranteed top-notch quality."</p>
+    <section class="contact_section layout_padding">
+        <div class="fm">
+            <form action="" method="post">
+                <h2>Sign up</h2>
+                {% csrf_token %}
+                <input type ="text" placeholder="Name" name ="name" required/><br>
+                <input type="email" placeholder="Email" name = "email" required/><br>
+                <input type="text" placeholder="Phone" name = "phone" required/><br>
+                <input type="password" placeholder="Password" name = "pwd" required /><br>
+                <input type="text" placeholder="Confirm Password" name = "cpwd" required /><br>
+                <button type="submit">Sign up</button><br><br>
+                Already Have Account? <a href="login">Log in</a>
+        </one>
+        </div>
+    </section>
+    </center>
+</body>
+</html>

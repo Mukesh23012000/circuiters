@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circuiters- Admin</title>
+      <!-- slider stylesheet -->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.1.3/assets/owl.carousel.min.css'" />
+
+    <!-- bootstrap core css -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}" />
+
+    <!-- fonts style -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Poppins:400,700&display=swap" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet" />
+    <!-- responsive style -->
+    <link href="{% static 'css/responsive.css' %}" rel="stylesheet" />
+    <style>
+        body{
+            background-color: rgb(240, 255, 248);
+            font-family:'Poppins', sans-serif;
+        }
+        h1{
+            font-family:'Poppins', sans-serif;
+            font-size: 300%;
+            font-weight:40;
+        }
+        h1:hover{
+            color: #24d278;
+            font-weight:200;
+            
+            
+        }
+    </style>
+</head>
+<body>
+    <center><h1>Circuiters Admin</h1>
+        <p>"For all your electrical and electronic device repairs. We offer unbeatable prices with guaranteed top-notch quality."</p>
+    </center>
+    <div class="container ">
+        <div class="heading_container">
+        <h2 class="">
+          Orders
+        </h2>
+        </div>
+        <div class="text-right">
+            <a href="/admin" type="button" class="btn btn-primary">Home</a>
+        </div>
+      </div>
+      <div class="container mt-3">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Device Name </th>
+            <th>Model</th>
+            <th>Message</th>
+            <th>Status</th>
+            <th style="text-align: center;">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for i in data %}
+            {% if i.status == 'uc' %}
+              <tr class="table-primary">
+                <td>{{i.dname}}</td>
+                <td>{{i.model}}</td>
+                <td>{{i.message}}</td>
+                <td>Initiated</td>
+                <td style="text-align: center;">
+                    <a href="/accept/{{i.oderid}}/{{id}}" class="btn btn-info btn-sm">
+                        <span class="glyphicon glyphicon-ok"></span> Accept 
+                    </a>
+                    <a href="/reject/{{i.oderid}}/{{id}}" class="btn btn-danger btn-sm">
+                        <span class="glyphicon glyphicon-ok"></span> Reject 
+                    </a>
+                </td>
+            </tr>
+            {% endif %}
+
+            {% if i.status == 'inp' %}
+            <tr class="table-warning">
+                <td>{{i.dname}}</td>
+                <td>{{i.model}}</td>
+                <td>{{i.message}}</td>
+                <td>In Process</td>
+                <td style="text-align: center;">
+                    <a href="/com/{{i.oderid}}/{{id}}" class="btn btn-success btn-sm">
+                        <span class="glyphicon glyphicon-ok"></span> Done 
+                    </a>
+                    <a href="/reject/{{i.oderid}}/{{id}}" class="btn btn-danger btn-sm">
+                        <span class="glyphicon glyphicon-ok"></span> Reject 
+                    </a>
+                </td>
+            </tr>
+            {% endif %}
+
+            {% if i.status == 'com' %}
+            <tr class="table-success">
+                <td>{{i.dname}}</td>
+                <td>{{i.model}}</td>
+                <td>{{i.message}}</td>
+                <td>Completed</td>
+                <td style="text-align: center;"> No Action</td>
+            </tr>
+            {% endif %}
+
+            {% if i.status == 'rej' %}
+            <tr class="table-danger">
+                <td>{{i.dname}}</td>
+                <td>{{i.model}}</td>
+                <td>{{i.message}}</td>
+                <td>Rejected</td>
+                <td style="text-align: center;"> No Action</td>
+            </tr>
+            {% endif %}
+
+          {% endfor %}
+        </tbody>
+      </table>
+      </div>
+      
+      <nav aria-label="page" style ="padding-left: 40%;">
+        <ul class="pagination">
+          {% for i in num %}
+            <li class="page-item"><a class="page-link" href="/useroders/{{id}}/{{i}}">{{i}}</a></li>
+          {% endfor %}
+        </ul>
+      </nav>
+      <div class="text-right">
+        <a href="/logout" type="button" class="btn btn-danger">Logout</a>
+      </div>
+</body>
+</html>

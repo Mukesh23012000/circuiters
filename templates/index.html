@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html>
+{% load static %}
+<head>
+  <!-- Basic -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <!-- Mobile Metas -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <!-- Site Metas -->
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+
+  <title>Circuiters</title>
+
+  <!-- slider stylesheet -->
+  <link rel="stylesheet" type="text/css"
+    href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.1.3/assets/owl.carousel.min.css'" />
+
+  <!-- bootstrap core css -->
+  <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}" />
+
+  <!-- fonts style -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Poppins:400,700&display=swap" rel="stylesheet">
+  <!-- Custom styles for this template -->
+  <link href="{% static 'css/style.css' %}" rel="stylesheet" />
+  <!-- responsive style -->
+  <link href="{% static 'css/responsive.css' %}" rel="stylesheet" />
+  <style>
+    .fm input {
+            width: 30%;
+        }
+  </style>
+</head>
+
+<body>
+  {% if value %}
+  <div class="alert alert-success alert-dismissible">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong>Success!</strong> Logged in as {{value}}.
+  </div>
+  {% endif %}
+  <div class="hero_area">
+    <!-- header section strats -->
+    <header class="header_section">
+      <div class="container-fluid">
+        <nav class="navbar navbar-expand-lg custom_nav-container">
+          <a class="navbar-brand" href="index">
+            <img src="{% static 'images/logo.png' %}" alt="" />
+          </a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav  ">
+              <li class="nav-item active">
+                <a class="nav-link" href="index">Home <span class="sr-only">(current)</span></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#about"> About</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#Categories">Categories </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#contact">Contact us</a>
+              </li>
+            </ul>
+            <div class="user_option">
+              {% if value %}
+              {{value}}<img src="{% static 'images/user.png' %}" alt=""> &nbsp;&nbsp;
+                <a href="logout">
+                <span>
+                    logout 
+                </span>
+                </a>
+              {% else %}
+                <a href="login">
+                    <img src="{% static 'images/user.png' %}" alt="">
+                  <span>
+                    Login / Register
+                  </span>
+                </a>
+              {% endif %}
+                
+              <form class="form-inline my-2 my-lg-0 ml-0 ml-lg-4 mb-3 mb-lg-0">
+                <button class="btn  my-2 my-sm-0 nav_search-btn" type="submit"></button>
+              </form>
+            </div>
+          </div>
+          <div>
+            <div class="custom_menu-btn ">
+              <button>
+                <span class=" s-1">
+
+                </span>
+                <span class="s-2">
+
+                </span>
+                <span class="s-3">
+
+                </span>
+              </button>
+            </div>
+          </div>
+
+        </nav>
+      </div>
+    </header>
+    <!-- end header section -->
+    <!-- slider section -->
+    <section class="slider_section ">
+      <div class="play_btn">
+        <a href="https://www.youtube.com/Circuiters">
+          <img src="{% static 'images/play.png' %}" alt="">
+        </a>
+      </div>
+      <div class="number_box">
+        <div>
+          <ol class="carousel-indicators indicator-2">
+            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active">01</li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="1">02</li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="2">03</li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="3">04</li>
+          </ol>
+        </div>
+      </div>
+      <div class="container">
+        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+          <ol class="carousel-indicators">
+            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+          </ol>
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="detail-box">
+                    <h1>
+                       Fix With
+                      <span>
+                      Circuiters
+                      </span>
+                    </h1>
+                    <p>
+                      we serve all our customers across India with best in the mobile repairing sector at most affordable prices.
+                    </p>
+                    <div class="btn-box">
+                      <a href="#about" class="btn-1">
+                        Read More
+                      </a>
+                      <a href="#contact" class="btn-2">
+                        Contact us
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6 img-container">
+                  <div class="img-box">
+                    <img src="{% static 'images/slider-img.png' %}" alt="">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="carousel-item ">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="detail-box">
+                    <h1>
+                        You Break, 
+                      <span>
+                        We Fix!
+                      </span>
+                    </h1>
+                    <p>
+                      We provide quality smartphone repairs with 100% customer satisfaction.Let us handle the hard stuff so you can focus on what matters most.
+                    </p>
+                    <div class="btn-box">
+                      <a href="#about" class="btn-1">
+                        Read More
+                      </a>
+                      <a href="#contact" class="btn-2">
+                        Contact us
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6 img-container">
+                  <div class="img-box">
+                    <img src="{% static 'images/slider-img2.png' %}" alt="">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="carousel-item ">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="detail-box">
+                    <h1>
+                      You can count on
+                      <span>
+                         us!
+                      </span>
+                    </h1>
+                    <p>
+                      We redefines the word 'fixing' by making it more easy, effective, efficient and within the reach of all the mortals
+                    </p>
+                    <div class="btn-box">
+                      <a href="#about" class="btn-1">
+                        Read More
+                      </a>
+                      <a href="#contact" class="btn-2">
+                        Contact us
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6 img-container">
+                  <div class="img-box">
+                    <img src="{% static 'images/slider-img3.png' %}" alt="">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="carousel-item ">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="detail-box">
+                    <h1>
+                      We can 
+                      <span>
+                        fix it!
+                      </span>
+                    </h1>
+                    <p>
+                      You can trust us for all your electrical and electronic device repairs. We offer unbeatable prices with guaranteed top-notch quality.
+                    </p>
+                    <div class="btn-box">
+                      <a href="#about" class="btn-1">
+                        Read More
+                      </a>
+                      <a href="#contact" class="btn-2">
+                        Contact us
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6 img-container">
+                  <div class="img-box">
+                    <img src="{% static 'images/slider-img4.png' %}" alt="">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- end slider section -->
+  </div>
+{% if value %}
+  <section class="contact_section layout_padding">
+    <div class="container ">
+      <div class="heading_container">
+        <h2 class="">
+          Place Repair Request
+        </h2>
+      </div>
+    </div>
+    <center>
+    <div class="fm">
+          <form action="" method="post">
+            {% csrf_token %}
+              <input type="text" placeholder="Name of the device" name = "named" required/><br>
+              <input type="text" placeholder="Model" name = "model" required/><br>
+              <input type="text" class="message-box" placeholder="Repair Deatails" name = "rd"/><br>
+              <button type="submit">Submit</button>
+            </div>
+          </form>
+    </div>
+  </center>
+  </section>
+{% endif %}
+<br>
+{% if value %}
+  {% if not data %}
+    <div class="container ">
+      <div class="heading_container">
+      <h2 class="">
+        Your Repair Details
+      </h2>
+      </div>
+    </div>
+    <center>No orders place!</center>
+  {% endif %}
+{% endif %}
+{% if data %}
+  <div class="container ">
+    <div class="heading_container">
+    <h2 class="">
+      Your Repair Details
+    </h2>
+    </div>
+  </div>
+  <div class="container mt-3">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Device Name </th>
+        <th>Model</th>
+        <th>Status</th>
+        <th style="text-align: center;">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for i in data %}
+        {% if i.status == 'uc' %}
+          <tr class="table-primary">
+            <td>{{i.device_name}}</td>
+            <td>{{i.model}}</td>
+            <td>Initiated</td>
+            <td style="text-align: center;"> 
+                <a href="/uedit/{{i.oid}}" class="btn btn-success btn-sm">
+                  Edit 
+                </a>
+            </td>
+          </tr>
+        {% endif %}
+        {% if i.status == 'inp' %}
+          <tr class="table-warning">
+            <td>{{i.device_name}}</td>
+            <td>{{i.model}}</td>
+            <td>In Process</td>
+            <td style="text-align: center;">No Action</td>
+          </tr>
+        {% endif %}
+        {% if i.status == 'com' %}
+          <tr class="table-success">
+            <td>{{i.device_name}}</td>
+            <td>{{i.model}}</td>
+            <td>Completed</td>
+            <td style="text-align: center;">No Action </td>
+          </tr>
+        {% endif %}
+        {% if i.status == 'rej' %}
+          <tr class="table-danger">
+            <td>{{i.device_name}}</td>
+            <td>{{i.model}}</td>
+            <td>Rejected</td>
+            <td style="text-align: center;">No Action</td>
+          </tr>
+        {% endif %}
+      {% endfor %}
+    </tbody>
+  </table>
+  <a href ="user/{{id}}/0" style="padding-left: 85%;">View all records</a>
+  </div>
+{% endif %}
+  <!-- about section -->
+
+  <section id = "about" class="about_section layout_padding">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="detail-box">
+            <div class="heading_container">
+              <h2>
+                About Us
+              </h2>
+
+            </div>
+            <p>
+              If you have a Smartphone & Laptop, well, considering today's world, you sure have it,
+               then you have reached at the right place! we redefines the word 'fixing' by making it more easy, effective, efficient and within the reach of all the mortals,
+               who thought getting a phone or a laptop repaired might be the worst nightmare of their lives.
+            </p>
+            <a href="info">
+              Read More
+            </a>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="img-box">
+            <img src="{% static 'images/about-img.png' %}" alt="">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- end about section -->
+
+  <!-- trending section -->
+
+  <section id = "Categories" class="trending_section layout_padding">
+    <div id="accordion">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="detail-box">
+              <div class="heading_container">
+                <h2>
+                  Trending Repair Categories
+                </h2>
+              </div>
+              <div class="tab_container">
+                <div class="t-link-box" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"
+                  aria-controls="collapseOne">
+                  <div class="number">
+                    <h5>
+                      01
+                    </h5>
+                  </div>
+                  <hr>
+                  <div class="t-name">
+                    <h5>
+                      Smartphones
+                    </h5>
+                  </div>
+                </div>
+                <div class="t-link-box collapsed" data-toggle="collapse" data-target="#collapseTwo"
+                  aria-expanded="false" aria-controls="collapseTwo">
+                  <div class="number">
+                    <h5>
+                      02
+                    </h5>
+                  </div>
+                  <hr>
+                  <div class="t-name">
+                    <h5>
+                      Laptop & Desktop
+                    </h5>
+                  </div>
+                </div>
+                <div class="t-link-box collapsed" data-toggle="collapse" data-target="#collapseThree"
+                  aria-expanded="false" aria-controls="collapseThree">
+                  <div class="number">
+                    <h5>
+                      03
+                    </h5>
+                  </div>
+                  <hr>
+                  <div class="t-name">
+                    <h5>
+                      Headphones
+                    </h5>
+                  </div>
+                </div>
+                <div class="t-link-box collapsed" data-toggle="collapse" data-target="#collapseFour"
+                  aria-expanded="false" aria-controls="collapseFour">
+                  <div class="number">
+                    <h5>
+                      04
+                    </h5>
+                  </div>
+                  <hr>
+                  <div class="t-name">
+                    <h5>
+                      Home Appliances
+                    </h5>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="collapse show" id="collapseOne" aria-labelledby="headingOne" data-parent="#accordion">
+              <div class="img_container ">
+                <div class="box b-1">
+                  <div class="img-box">
+                    <img src="{% static 'images/t-1.jpg' %}" alt="">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="collapse" id="collapseTwo" aria-labelledby="headingTwo" data-parent="#accordion">
+              <div class="img_container ">
+                <div class="box b-2">
+                  <div class="img-box">
+                    <img src="{% static 'images/t-2.jpg' %}" alt="">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="collapse" id="collapseThree" aria-labelledby="headingThree" data-parent="#accordion">
+              <div class="img_container ">
+                <div class="box b-2">
+                  <div class="img-box">
+                    <img src="{% static 'images/t-3.jpg' %}" alt="">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="collapse" id="collapseFour" aria-labelledby="headingfour" data-parent="#accordion">
+              <div class="img_container ">
+                <div class="box b-1">
+                  <div class="img-box">
+                    <img src="{% static 'images/t-4.jpg' %}" alt="">
+                  </div>
+                </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% if not value %}
+  <section class="contact_section layout_padding">
+    <div class="container ">
+      <div class="heading_container">
+        <h2 class="">
+          Contact Us
+        </h2>
+      </div>
+
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <form action="" method="post">
+            {% csrf_token %}
+            <div>
+              <input type="text" placeholder="Name" name = "name"/>
+            </div>
+            <div>
+              <input type="email" placeholder="Email" name = "email" />
+            </div>
+            <div>
+              <input type="text" placeholder="Phone" name = "phone" />
+            </div>
+            <div>
+              <input type="text" class="message-box" placeholder="Message" name = "message"/>
+            </div>
+            <div class="d-flex ">
+              <button type="submit">
+                SEND
+              </button>
+            </div>
+          </form>
+        </div>
+        <div class="col-md-6">
+          <div class="map_container">
+            <div class="map-responsive">
+              <iframe
+                src="https://www.google.com/maps/embed/v1/place?key=AIzaSyA0s1a7phLN0iaD6-UE7m4qP-z21pH0eSc&q=redhills"
+                width="600" height="300" frameborder="0" style="border:0; width: 100%; height:100%"
+                allowfullscreen></iframe> 
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endif %}
+  <!-- info section -->
+  <section id ="contact" class="info_section layout_padding2">
+    <div class="container">
+      <div class="info_logo">
+        <h2>
+          Circuiters
+        </h2>
+      </div>
+      <div class="row">
+
+        <div class="col-md-3">
+          <div class="info_contact">
+            <h5>
+              About
+            </h5>
+            <div>
+              <div class="img-box">
+                <img src="{% static 'images/location-white.png' %}" width="18px" alt="">
+              </div>
+              <p>
+                Chennai,India
+              </p>
+            </div>
+            <div>
+              <div class="img-box">
+                <img src="{% static 'images/telephone-white.png' %}" width="12px" alt="">
+              </div>
+              <p>
+                +91 8680990661
+              </p>
+            </div>
+            <div>
+              <div class="img-box">
+                <img src="{% static 'images/envelope-white.png' %}" width="18px" alt="">
+              </div>
+              <p>
+                sendtomk1@gmail.com
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="info_info">
+            <h5>
+              Informations
+            </h5>
+            <p>
+              You can trust us for all your electrical and electronic device repairs. 
+              We offer unbeatable prices with guaranteed top-notch quality.
+            </p>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="info_insta">
+            <h5>
+              Instagram
+            </h5>
+            <div class="insta_container">
+              <a href ="https://www.instagram.com/circuiter_s/" style="color: white;">
+                @circuiter_s
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="info_form ">
+            <h5>
+              Newsletter
+            </h5>
+            <form action="">
+              <input type="email" placeholder="Enter your email">
+              <button>
+                Subscribe
+              </button>
+            </form>
+            <div class="social_box">
+              <a href="https://twitter.com/Circuiters1?s=09">
+                <img src="{% static 'images/twitter.png' %}" alt="">
+              </a>
+              <a href="https://youtube.com/circuiters">
+                <img src="{% static 'images/youtube.png' %}" alt="">
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- end info_section -->
+
+
+  <!-- footer section -->
+  <section class="container-fluid footer_section ">
+    <div class="container">
+      <p>
+        &copy; 2023 All Rights Reserved By
+        <a href="https://html.design/">Circuiters</a>
+      </p>
+    </div>
+  </section>
+  <!-- end  footer section -->
+
+
+  <script type="text/javascript" src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/bootstrap.js' %}"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/owl.carousel.min.js">
+  </script>
+  <script type="text/javascript">
+    $(".owl-carousel").owlCarousel({
+      loop: true,
+      margin: 10,
+      nav: true,
+      navText: [],
+      autoplay: true,
+      autoplayHoverPause: true,
+      responsive: {
+        0: {
+          items: 1
+        },
+        420: {
+          items: 2
+        },
+        1000: {
+          items: 5
+        }
+      }
+
+    });
+  </script>
+  <script>
+    var nav = $("#navbarSupportedContent");
+    var btn = $(".custom_menu-btn");
+    btn.click
+    btn.click(function (e) {
+
+      e.preventDefault();
+      nav.toggleClass("lg_nav-toggle");
+      document.querySelector(".custom_menu-btn").classList.toggle("menu_btn-style")
+    });
+  </script>
+  <script>
+    $('.carousel').on('slid.bs.carousel', function () {
+      $(".indicator-2 li").removeClass("active");
+      indicators = $(".carousel-indicators li.active").data("slide-to");
+      a = $(".indicator-2").find("[data-slide-to='" + indicators + "']").addClass("active");
+      console.log(indicators);
+
+    })
+  </script>
+
+</body>
+</body>
+
+</html>

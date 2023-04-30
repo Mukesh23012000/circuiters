@@ -31,7 +31,10 @@ urlpatterns = [
     path('adminusers/<int:length>',views.adminusers),
     path('useroders/<int:id>/<int:length>',views.useroders),
     path('accept/<int:id>/<int:uid>',views.accept),
+    path('received/<int:id>/<int:uid>',views.received),
     path('reject/<int:id>/<int:uid>',views.reject),
+    path('returned/<int:id>/<int:uid>',views.returned),
     path('com/<int:id>/<int:uid>',views.com),
     path('uedit/<int:id>',views.uedit),
+    path('confirm/<str:mail>/<str:msg>',views.confirm),
 ]

@@ -1,8 +1,13 @@
 from django.shortcuts import render,HttpResponse,redirect
 import mysql.connector
+from django.conf import settings
+from django.core.mail import send_mail
+from cryptography.fernet import Fernet
 
-
+Address = "No.5, Cholan Street, \nRedhills,\nChennai - 600052,\nTamil Nadu, India"
 code = "<center><h1>Invalid Session</h1><br> <a href = '/login'>Login Page</a></center>"
+key = Fernet.generate_key()
+fernet = Fernet(key)
 
 def dbconnect():
     dataBase = mysql.connector.connect(
@@ -12,6 +17,17 @@ def dbconnect():
         database = "circuiters"
     )
     return dataBase
+
+def toencrpyt(message):
+    print(message)
+    enmsg = fernet.encrypt(message.encode())
+    return enmsg
+
+def mailsent(subject,message,email):
+    email_from = settings.EMAIL_HOST_USER
+    recipient_list = [email, ]
+    send_mail( subject, message, email_from, recipient_list )
+
 
 def validate(request):
     try:
@@ -50,8 +66,11 @@ def login(request):
             c = 'Email not registered with us'
             return render(request,"login.html",{'msg':c,'lmsg':l})
         else:
-            if t[0][4] == pwd:
-                request.session['value'] = t[0][0] , t[0][1]  
+            if t[0][5] != 1:
+                c = 'Account is not confirmed. Kindly check you email'
+                return render(request,"login.html",{'msg':c,'lmsg':l})
+            elif t[0][4] == pwd:
+                request.session['value'] = [t[0][0] , t[0][1] ]
                 #print(t)
                 return redirect(index)
             else:
@@ -78,11 +97,15 @@ def index(request):
             data = False
         else:
             data = list()
-            for i in range(0,10):
+            lt  = 10
+            if len(t)<10:
+                lt = len(t)
+            for i in range(0,lt):
                 temp = dict()
                 temp["device_name"] = t[i][1]
                 temp["model"] = t[i][2]
-                temp["status"] = t[i][5]
+                temp["status"] = t[i][4]
+                temp["adds"] = t[i][7]
                 temp["oid"] = t[i][0]
                 data.append(temp)
                 print(data)
@@ -90,7 +113,8 @@ def index(request):
             n = request.POST['named']
             model = request.POST['model']
             rd = request.POST['rd']
-            sql = f"insert into details (device_name,model,message,id,flag) values('{n}','{model}','{rd}','{id}','uc');"
+            adds = request.POST['adds']
+            sql = f"insert into details (device_name,model,message,id,flag,address) values('{n}','{model}','{rd}','{id}','uc','{adds}');"
             c.execute(sql)
             dataBase.commit()
             return redirect(index)
@@ -128,6 +152,8 @@ def signup(request):
             m = "Password and Confirm password should be same"
         elif len(pwd) < 8:
             m = "Password should have minimum 8 characters"
+        elif len(phone) !=10:
+            m = "Phone number should have 10 digits"
         else:
             dataBase = dbconnect()
             c = dataBase.cursor()
@@ -135,10 +161,14 @@ def signup(request):
             c.execute(ch)
             t = c.fetchall()
             if t == []:
-                sql = f"insert into users (Name,Email,Phone,Password) values('{name}','{email}','{phone}','{pwd}');"
+                link = hash(email)
+                sql = f"insert into users (Name,Email,Phone,Password,flag,temp) values('{name}','{email}','{phone}','{pwd}','0','{link}');"
                 c.execute(sql)
                 dataBase.commit()
-                request.session['lmsg'] = "Account Created Sucessfully "
+                request.session['lmsg'] = "Confirm Mail sent to the registered mail Id. Kindly confirm to complete the Registration"
+                subject = "Welcome to Cicruiters "
+                message = f"Hi {name},\nThank you for registering in Circuiters.\nKindly click the link to confirm \nhttp://localhost:8000/confirm/{email}/{link} \n \n Regards, \nCircuiters"
+                mailsent(subject,message,email)
                 return redirect(login)
             else:
                 m = "Email Id or Phone Number was alreday registered with us "
@@ -252,7 +282,8 @@ def urec(request,id,length):
         temp['dname'] = t[i][1]
         temp['model'] = t[i][2]
         temp['message'] = t[i][3]
-        temp['status'] = t[i][5]
+        temp['status'] = t[i][4]
+        temp['adds'] = t[i][7]
         temp['oid'] = t[i][0]
         data.append(temp)
     pg = pag(len(t))
@@ -294,6 +325,7 @@ def adminusers(request,length):
     pg = pag(len(t))
     print(pg)
     return render(request,"adminusers.html",{'data':data,'num':pg})
+
 def useroders(request,id,length):
     v = validate(request)
     if v == False:
@@ -316,7 +348,8 @@ def useroders(request,id,length):
         temp['dname'] = t[i][1]
         temp['model'] = t[i][2]
         temp['message'] = t[i][3]
-        temp['status'] = t[i][5]
+        temp['status'] = t[i][4]
+        temp['adds'] = t[i][7]
         temp['oderid'] = t[i][0]
         data.append(temp)
     pg = pag(len(t))
@@ -330,9 +363,49 @@ def accept(request,id,uid):
     
     dataBase = dbconnect()
     c = dataBase.cursor()
+    sql = f"update details set flag = 'wp' where order_id = '{id}'; "
+    c.execute(sql)
+    dataBase.commit()
+    sql = f"select * from users where id ='{uid}';"
+    c.execute(sql)
+    t = c.fetchall()
+    name = t[0][1]
+    email = t[0][2]
+    sql = f"select * from details where order_id ='{id}';"
+    c.execute(sql)
+    t = c.fetchall()
+    msk = t[0][3]
+    model = t[0][2]
+    dname = t[0][1]
+    subject = "Update from Cicruiters for your order"
+    message = f"Hi {name},\n\nYour Order id: {id} \ndevice Name: {dname} \nModel: {model} \nMessage: {msk} \n\nThe Above order was accepted by our Technical Team \nKindly send your product to Address:\n{Address} \n\nStatus of the order will be changed to 'Received(repair in process)' once we get your product. \n\nRegards,\nTechnical Team"
+    mailsent(subject,message,email)
+    return redirect(useroders,uid,0)
+
+def received(request,id,uid):
+    v = validate(request)
+    if v == False:
+        return HttpResponse(f"{code}")
+    
+    dataBase = dbconnect()
+    c = dataBase.cursor()
     sql = f"update details set flag = 'inp' where order_id = '{id}'; "
     c.execute(sql)
     dataBase.commit()
+    sql = f"select * from users where id ='{uid}';"
+    c.execute(sql)
+    t = c.fetchall()
+    name = t[0][1]
+    email = t[0][2]
+    sql = f"select * from details where order_id ='{id}';"
+    c.execute(sql)
+    t = c.fetchall()
+    msk = t[0][3]
+    model = t[0][2]
+    dname = t[0][1]
+    subject = "Update from Cicruiters for your order"
+    message = f"Hi {name},\n\nYour Order id: {id} \ndevice Name: {dname} \nModel: {model} \nMessage: {msk} \n\nWe Received your product and we've started our repairing process.\n \nRegards,\nTechnical Team"
+    mailsent(subject,message,email)
     return redirect(useroders,uid,0)
 
 def reject(request,id,uid):
@@ -345,6 +418,46 @@ def reject(request,id,uid):
     sql = f"update details set flag = 'rej' where order_id = '{id}'; "
     c.execute(sql)
     dataBase.commit()
+    sql = f"select * from users where id ='{uid}';"
+    c.execute(sql)
+    t = c.fetchall()
+    name = t[0][1]
+    email = t[0][2]
+    sql = f"select * from details where order_id ='{id}';"
+    c.execute(sql)
+    t = c.fetchall()
+    msk = t[0][3]
+    model = t[0][2]
+    dname = t[0][1]
+    message = f"Hi {name},\n\nYour Order id: {id} \ndevice Name: {dname} \nModel: {model} \nMessage: {msk} \n\nSorry, We are unable to continue with your above order. \n\nRegards,\nTechnical Team"
+    subject= "Update from Cicruiters for your order"
+    mailsent(subject,message,email)
+    return redirect(useroders,uid,0)
+
+def returned(request,id,uid):
+    v = validate(request)
+    if v == False:
+        return HttpResponse(f"{code}")
+    
+    dataBase = dbconnect()
+    c = dataBase.cursor()
+    sql = f"update details set flag = 'ret' where order_id = '{id}'; "
+    c.execute(sql)
+    dataBase.commit()
+    sql = f"select * from users where id ='{uid}';"
+    c.execute(sql)
+    t = c.fetchall()
+    name = t[0][1]
+    email = t[0][2]
+    sql = f"select * from details where order_id ='{id}';"
+    c.execute(sql)
+    t = c.fetchall()
+    msk = t[0][3]
+    model = t[0][2]
+    dname = t[0][1]
+    message = f"Hi {name},\n\nYour Order id: {id} \ndevice Name: {dname} \nModel: {model} \nMessage: {msk} \n\nSorry, We've examined your product, Unfortunately we are unable to repair your product.So we've sent back the product to your address.\n\nRegards,\nTechnical Team"
+    subject= "Update from Cicruiters for your order"
+    mailsent(subject,message,email)
     return redirect(useroders,uid,0)
 
 def com(request,id,uid):
@@ -357,6 +470,20 @@ def com(request,id,uid):
     sql = f"update details set flag = 'com' where order_id = '{id}'; "
     c.execute(sql)
     dataBase.commit()
+    sql = f"select * from users where id ='{uid}';"
+    c.execute(sql)
+    t = c.fetchall()
+    name = t[0][1]
+    email = t[0][2]
+    sql = f"select * from details where order_id ='{id}';"
+    c.execute(sql)
+    t = c.fetchall()
+    msk = t[0][3]
+    model = t[0][2]
+    dname = t[0][1]
+    message = f"Hi {name},\n\nYour Order id: {id} \ndevice Name: {dname} \nModel: {model} \nMessage: {msk} \n\nYour product was repaired sucessfully and we've sent the product to the given address.\n\nRegards,\nTechnical Team"
+    subject= "Update from Cicruiters for your order"
+    mailsent(subject,message,email)
     return redirect(useroders,uid,0)
 
 def uedit(request,id):
@@ -366,19 +493,36 @@ def uedit(request,id):
     
     dataBase = dbconnect()
     c = dataBase.cursor()
-    sql = f"select * from details where order_id = {id};"
+    sql = f"select * from details where order_id = '{id}';"
     c.execute(sql)
     t = c.fetchall()
     dname = t[0][1]
     model= t[0][2]
     msg = t[0][3]
+    adds = t[0][7]
     lmsg = False
     if request.method =='POST':
         dname = request.POST['dname']
         model = request.POST['model']
         msg = request.POST['msg']
-        sql = f"update details set device_name= '{dname}', model = '{model}', message = '{msg}',flag = 'uc' where order_id ={id};"
+        adds = request.POST['adds']
+        sql = f"update details set device_name= '{dname}', model = '{model}', message = '{msg}',flag = 'uc', address = '{adds}' where order_id ={id};"
         c.execute(sql)
         dataBase.commit()
         lmsg = "Updated Succesfully "
-    return render(request,"editrec.html",{'dname':dname,'model':model,'msg':msg,'lmsg':lmsg})
+    return render(request,"editrec.html",{'dname':dname,'model':model,'msg':msg,'adds':adds,'lmsg':lmsg})
+
+def confirm(request,mail,msg):
+    dataBase = dbconnect()
+    c = dataBase.cursor()
+    sql = f"select * from users where Email = '{mail}';"
+    c.execute(sql)
+    t= c.fetchall()
+    if t[0][6] == msg:
+        sql = f"update users set Flag = '1' where Email= '{mail}';"
+        c.execute(sql)
+        dataBase.commit()
+        request.session['lmsg'] = "Confirmation done. Account created sucessfully"
+        return redirect(login)
+    else:
+        return HttpResponse("Invalid Request")

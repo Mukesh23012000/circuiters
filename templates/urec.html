@@ -2,6 +2,7 @@
 <html lang="en">
     {% load static %}
 <head>
+    <link rel="icon" type="image/x-icon" href="{% static '/images/head.jpg' %}">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -58,6 +59,7 @@
             <th>Model</th>
             <th>Message </th>
             <th>Status</th>
+            <th>Address</th>
             <th style="text-align: center;">Action</th>
           </tr>
         </thead>
@@ -68,6 +70,7 @@
                 <td>{{i.dname}}</td>
                 <td>{{i.model}}</td>
                 <td>{{i.message}}</td>
+                <td>{{i.adds}}</td>
                 <td>Initiated</td>
                 <td style="text-align: center;"> 
                   <a href="/uedit/{{i.oid}}" class="btn btn-success btn-sm">
@@ -76,13 +79,36 @@
               </td>
             </tr>
             {% endif %}
-
-            {% if i.status == 'inp' %}
+            
+            {% if i.status == 'wp' %}
             <tr class="table-warning">
                 <td>{{i.dname}}</td>
                 <td>{{i.model}}</td>
                 <td>{{i.message}}</td>
-                <td>In Process</td>
+                <td>{{i.adds}}</td>
+                <td>Waiting for product</td>
+                <td style="text-align: center;">No Action</td>
+            </tr>
+            {% endif %}
+
+            {% if i.status == 'inp' %}
+            <tr class="table-info">
+                <td>{{i.dname}}</td>
+                <td>{{i.model}}</td>
+                <td>{{i.message}}</td>
+                <td>{{i.adds}}</td>
+                <td>Received(Repair inprocess)</td>
+                <td style="text-align: center;">No Action</td>
+            </tr>
+            {% endif %}
+
+            {% if i.status == 'ret' %}
+            <tr class="table-danger">
+                <td>{{i.dname}}</td>
+                <td>{{i.model}}</td>
+                <td>{{i.message}}</td>
+                <td>{{i.adds}}</td>
+                <td>Unable to Repair</td>
                 <td style="text-align: center;">No Action</td>
             </tr>
             {% endif %}
@@ -92,6 +118,7 @@
                 <td>{{i.dname}}</td>
                 <td>{{i.model}}</td>
                 <td>{{i.message}}</td>
+                <td>{{i.adds}}</td>
                 <td>Completed</td>
                 <td style="text-align: center;">No Action</td>
             </tr>
@@ -102,6 +129,7 @@
                 <td>{{i.dname}}</td>
                 <td>{{i.model}}</td>
                 <td>{{i.message}}</td>
+                <td>{{i.adds}}</td>
                 <td>Rejected</td>
                 <td style="text-align: center;">No Action</td>
             </tr>

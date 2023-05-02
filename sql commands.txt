@@ -1,0 +1,6 @@
+tsgebohygqmjbuaa
+create database circuiters;
+use circuiters;
+create table contact( id int primary key not null auto_increment,name varchar(50) not null,email varchar(50) not null,phone varchar(10) not null,message varchar(200) not null,updated_on timestamp default current_timestamp on update current_timestamp);
+create table users( id int primary key not null auto_increment, Name varchar(50) not null,Email varchar(50) not null unique, Phone varchar(50) not null unique,Password varchar(50) not null,flag int not null,temp varchar(20));
+create table details(order_id int primary key not null auto_increment, device_name varchar(50) not null, model varchar(50) not null,message varchar(200) not null, flag varchar(50),id int,foreign key(id) references users(id),updated_on timestamp default current_timestamp on update current_timestamp,address varchar(500) not null);

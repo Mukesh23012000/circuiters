@@ -41,9 +41,9 @@
     </style>
 </head>
 <body>
-    <center><h1>Circuiters Admin</h1>
+    <div class="text-center"><h1>Circuiters Admin</h1>
         <p>"For all your electrical and electronic device repairs. We offer unbeatable prices with guaranteed top-notch quality."</p>
-    </center>
+    </div>
     <div class="container ">
         <div class="heading_container">
         <h2 class="">
@@ -72,7 +72,10 @@
           {% endfor %}
         </tbody>
       </table>
-      <a href ="contactmessages/0" style="padding-left: 85%;">View all records</a>
+      <div class="text-right">
+        <a href ="contactmessages/0" style="word-wrap: break-word;">View all records</a>
+      </div>
+      
       </div>
 
       <div class="container ">
@@ -106,7 +109,10 @@
           {% endfor %}
         </tbody>
       </table>
-      <a href ="adminusers/0" style="padding-left: 85%;">View all records</a>
+      <div class="text-right">
+        <a href ="adminusers/0" style="word-wrap: break-word;">View all records</a>
+      </div>
+      
       </div>
       <div class="text-right">
         <a href="/logout" type="button" class="btn btn-danger">Logout</a>

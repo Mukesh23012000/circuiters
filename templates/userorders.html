@@ -38,9 +38,10 @@
     </style>
 </head>
 <body>
-    <center><h1>Circuiters Admin</h1>
+    <div class="text-center">
+        <h1>Circuiters Admin</h1>
         <p>"For all your electrical and electronic device repairs. We offer unbeatable prices with guaranteed top-notch quality."</p>
-    </center>
+    </div>
     <div class="container ">
         <div class="heading_container">
         <h2 class="">
@@ -55,7 +56,7 @@
       <table class="table">
         <thead>
           <tr>
-            <th>Device Name </th>
+            <th>Device</th>
             <th>Model</th>
             <th>Message</th>
             <th>Address</th>
@@ -73,11 +74,11 @@
                 <td>{{i.adds}}</td>
                 <td>Initiated</td>
                 <td style="text-align: center;">
-                    <a href="/accept/{{i.oderid}}/{{id}}" class="btn btn-info btn-sm">
-                        <span class="glyphicon glyphicon-ok"></span> Accept 
-                    </a>
+                    <a href="/accept/{{i.oderid}}/{{id}}" class="btn btn-info btn-sm" onclick="accept()">
+                      Accept 
+                    </a><br><br>
                     <a href="/reject/{{i.oderid}}/{{id}}" class="btn btn-danger btn-sm">
-                        <span class="glyphicon glyphicon-ok"></span> Reject 
+                      Reject 
                     </a>
                 </td>
             </tr>
@@ -164,5 +165,7 @@
       <div class="text-right">
         <a href="/logout" type="button" class="btn btn-danger">Logout</a>
       </div>
+      
+      
 </body>
 </html>

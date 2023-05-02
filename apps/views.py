@@ -3,7 +3,7 @@ import mysql.connector
 from django.conf import settings
 from django.core.mail import send_mail
 from cryptography.fernet import Fernet
-
+from datetime import date
 Address = "No.5, Cholan Street, \nRedhills,\nChennai - 600052,\nTamil Nadu, India"
 code = "<center><h1>Invalid Session</h1><br> <a href = '/login'>Login Page</a></center>"
 key = Fernet.generate_key()
@@ -28,7 +28,20 @@ def mailsent(subject,message,email):
     recipient_list = [email, ]
     send_mail( subject, message, email_from, recipient_list )
 
-
+def inactive(request):
+    dataBase = dbconnect()
+    c = dataBase.cursor()
+    sql = f"select * from users where flag = '0';"
+    c.execute(sql)
+    t = c.fetchall()
+    if t == []:
+        pass
+    else:
+        ld = t[0][7]
+        today = str(date.today())
+        sql = f"delete from users where flag = '0' and updated_on < '{today}';"
+        c.execute(sql)
+        dataBase.commit()
 def validate(request):
     try:
         print(request.session['value'])
@@ -41,9 +54,13 @@ def logout(request):
     l = False
     try:
         del request.session['value']
-        request.session['lmsg'] = "Logged out Sucessfully!"
+        request.session['lmsg'] = "Logged out successfully !"
     except:
         print("unable to delete the session value")
+    try:
+        del request.session['loginmsg']
+    except:
+        pass
     return redirect(login)
 
 def login(request):
@@ -67,11 +84,13 @@ def login(request):
             return render(request,"login.html",{'msg':c,'lmsg':l})
         else:
             if t[0][5] != 1:
-                c = 'Account is not confirmed. Kindly check you email'
+                print("hida",t)
+                c = 'Account is not confirmed. Kindly check you email inbox'
                 return render(request,"login.html",{'msg':c,'lmsg':l})
             elif t[0][4] == pwd:
                 request.session['value'] = [t[0][0] , t[0][1] ]
                 #print(t)
+                request.session['loginmsg'] = f"Logged in as {t[0][1]}"
                 return redirect(index)
             else:
                 c = 'Incorrect Password '
@@ -84,9 +103,15 @@ def index(request):
         v = request.session['value']
         value =v[1]
         id = v[0]
+        msg = request.session['loginmsg']
     except:
         value = False
         data = False
+        try:
+            msg = request.session['loginmsg']
+        except:
+            msg=False
+
     if value != False:
         dataBase = dbconnect()
         c = dataBase.cursor()
@@ -117,6 +142,7 @@ def index(request):
             sql = f"insert into details (device_name,model,message,id,flag,address) values('{n}','{model}','{rd}','{id}','uc','{adds}');"
             c.execute(sql)
             dataBase.commit()
+            request.session['loginmsg'] = "Your Order Was Placed successfully"
             return redirect(index)
     else:
         if request.method == 'POST':
@@ -130,7 +156,10 @@ def index(request):
             print(sql)
             c.execute(sql)
             dataBase.commit()
-    return render(request,"index.html",{'value':value,'data':data,'id':id})
+            request.session['loginmsg'] = "Sumbitted successfully "
+            msg = request.session['loginmsg']
+            return redirect(index)
+    return render(request,"index.html",{'value':value,'data':data,'id':id,'msg':msg})
 
 def signup(request):
     try:
@@ -165,9 +194,10 @@ def signup(request):
                 sql = f"insert into users (Name,Email,Phone,Password,flag,temp) values('{name}','{email}','{phone}','{pwd}','0','{link}');"
                 c.execute(sql)
                 dataBase.commit()
-                request.session['lmsg'] = "Confirm Mail sent to the registered mail Id. Kindly confirm to complete the Registration"
-                subject = "Welcome to Cicruiters "
-                message = f"Hi {name},\nThank you for registering in Circuiters.\nKindly click the link to confirm \nhttp://localhost:8000/confirm/{email}/{link} \n \n Regards, \nCircuiters"
+                request.session['lmsg'] = "Confirm Link sent to the registered mail Id.Link will be expired within 24 hours"
+                subject = "Welcome to Circuiters "
+                name=name.replace(" ","")
+                message = f"Hi {name}, \n\nThank you for registering in Circuiters.\nKindly click the link to confirm \n\nhttp://localhost:8000/confirm/{email}/{link} \n\nThe Above link will expire within 24 Hours \n\nRegards, \nCircuiters"
                 mailsent(subject,message,email)
                 return redirect(login)
             else:
@@ -178,6 +208,7 @@ def info(request):
     return render(request,"info.html")
 
 def admin(request):
+    inactive(request)
     v = validate(request)
     if v == False:
         return HttpResponse(f"{code}")
@@ -199,7 +230,7 @@ def admin(request):
         if i>=9:
             break
     #users list
-    sql = f"select * from users order by id desc;"
+    sql = f"select * from users where flag = '1' order by id desc;"
     c.execute(sql)
     t = c.fetchall()
     data1 = []
@@ -378,7 +409,8 @@ def accept(request,id,uid):
     model = t[0][2]
     dname = t[0][1]
     subject = "Update from Cicruiters for your order"
-    message = f"Hi {name},\n\nYour Order id: {id} \ndevice Name: {dname} \nModel: {model} \nMessage: {msk} \n\nThe Above order was accepted by our Technical Team \nKindly send your product to Address:\n{Address} \n\nStatus of the order will be changed to 'Received(repair in process)' once we get your product. \n\nRegards,\nTechnical Team"
+    name = name.replace(" ","")
+    message = f"Hi {name},\n\nYour Order id: {id} \nDevice Name: {dname} \nModel: {model} \nMessage: {msk} \n\nThe Above order is accepted by our Technical Team \nKindly send your product to Address:\n{Address} \n\nStatus of the order will be changed to 'Received(repair in process)' once we get your product. \n\nRegards,\nTechnical Team"
     mailsent(subject,message,email)
     return redirect(useroders,uid,0)
 
@@ -481,7 +513,7 @@ def com(request,id,uid):
     msk = t[0][3]
     model = t[0][2]
     dname = t[0][1]
-    message = f"Hi {name},\n\nYour Order id: {id} \ndevice Name: {dname} \nModel: {model} \nMessage: {msk} \n\nYour product was repaired sucessfully and we've sent the product to the given address.\n\nRegards,\nTechnical Team"
+    message = f"Hi {name},\n\nYour Order id: {id} \ndevice Name: {dname} \nModel: {model} \nMessage: {msk} \n\nYour product was repaired successfully  and we've sent the product to the given address.\n\nRegards,\nTechnical Team"
     subject= "Update from Cicruiters for your order"
     mailsent(subject,message,email)
     return redirect(useroders,uid,0)
@@ -522,7 +554,7 @@ def confirm(request,mail,msg):
         sql = f"update users set Flag = '1' where Email= '{mail}';"
         c.execute(sql)
         dataBase.commit()
-        request.session['lmsg'] = "Confirmation done. Account created sucessfully"
+        request.session['lmsg'] = "Confirmation done. Account created successfully "
         return redirect(login)
     else:
         return HttpResponse("Invalid Request")

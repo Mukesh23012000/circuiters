@@ -38,10 +38,10 @@
 </head>
 
 <body>
-  {% if value %}
+  {% if msg %}
   <div class="alert alert-success alert-dismissible">
     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-    <strong>Success!</strong> Logged in as {{value}}.
+    {{msg}}
   </div>
   {% endif %}
   <div class="hero_area">
@@ -73,13 +73,13 @@
               </li>
                 {% if value %}
                 <li class="nav-item" >
-                  <a class="nav-link" href="logout" >
-                      logout 
+                  <a class="nav-link" href="#" >
+                  {{value}}<img src="{% static 'images/user.png' %}" alt="">
                   </a>
                 </li>
                 <li class="nav-item" >
-                  <a class="nav-link" href="#" >
-                  {{value}}<img src="{% static 'images/user.png' %}" alt="">
+                  <a class="nav-link" href="logout" >
+                      logout 
                   </a>
                 </li>
                 {% else %}
@@ -131,6 +131,7 @@
     <!-- end header section -->
     <!-- slider section -->
     <section class="slider_section ">
+      <div></div>
       <div class="play_btn">
         <a href="https://www.youtube.com/Circuiters">
           <img src="{% static 'images/play.png' %}" alt="">
@@ -160,13 +161,10 @@
                 <div class="col-md-6">
                   <div class="detail-box">
                     <h1>
-                       Fix With
-                      <span>
-                      Circuiters
-                      </span>
+                      Fix With <span>Circuiters</span>
                     </h1>
                     <p>
-                      we serve all our customers across India with best in the mobile repairing sector at most affordable prices.
+                      we serve all across India with best in the Electrical and Electronic sector at most affordable prices.
                     </p>
                     <div class="btn-box">
                       <a href="#about" class="btn-1">
@@ -190,13 +188,10 @@
                 <div class="col-md-6">
                   <div class="detail-box">
                     <h1>
-                        You Break, 
-                      <span>
-                        We Fix!
-                      </span>
+                      You Break <span>We Fix</span>
                     </h1>
                     <p>
-                      We provide quality smartphone repairs with 100% customer satisfaction.Let us handle the hard stuff so you can focus on what matters most.
+                      Let us handle the hard stuff so you can focus on what matters most.
                     </p>
                     <div class="btn-box">
                       <a href="#about" class="btn-1">
@@ -290,19 +285,26 @@
         </h2>
       </div>
     </div>
-    <center>
-    <div class="fm">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+    <!--div class="fm" style="padding-left: 25%; padding-right: 25%;"-->
           <form action="" method="post">
             {% csrf_token %}
-              <input type="text" placeholder="Name of the device" name = "named" required/><br>
-              <input type="text" placeholder="Model" name = "model" required/><br>
-              <input type="text" class="message-box" placeholder="Repair Deatails" name = "rd"/><br>
-              <input type="text" class="message-box" placeholder="Your Address" name = "adds"/><br>
+              <div><input type="text" placeholder="Name of the device" name = "named" required/></div>
+              <div><input type="text" placeholder="Model" name = "model" required/></div>
+              <div><input type="text" class="message-box" placeholder="Repair Details" name = "rd" required/></div>
+              <div><input type="text" class="message-box" placeholder="Your Address" name = "adds" required/></div>
               <button type="submit">Submit</button>
-            </div>
           </form>
+        </div>
+        <div class="col-md-6">
+          <div class="img-box">
+            <img src="{% static 'images/Order Now.png' %}" alt="">
+          </div>
+        </div>
+      </div>
     </div>
-  </center>
   </section>
 {% endif %}
 <br>
@@ -330,7 +332,7 @@
   <table class="table">
     <thead>
       <tr>
-        <th>Device Name </th>
+        <th>Device</th>
         <th>Model</th>
         <th>Address</th>
         <th>Status</th>
@@ -405,7 +407,9 @@
       {% endfor %}
     </tbody>
   </table>
-  <a href ="user/{{id}}/0" style="padding-left: 85%;">View all records</a>
+  <div class="text-right">
+    <a href ="user/{{id}}/0" style="word-wrap: break-word;">View all records</a>
+  </div>
   </div>
 {% endif %}
   <!-- about section -->
@@ -583,7 +587,7 @@
     </div>
   </section>
 {% if not value %}
-  <section class="contact_section layout_padding">
+  <section class="contact_section layout_padding" id ="contact">
     <div class="container ">
       <div class="heading_container">
         <h2 class="">
@@ -665,7 +669,7 @@
               <div class="img-box">
                 <img src="{% static 'images/envelope-white.png' %}" width="18px" alt="">
               </div>
-              <p>
+              <p styel="word-wrap: break-word;">
                 sendtomk1@gmail.com
               </p>
             </div>
@@ -783,6 +787,4 @@
   </script>
 
 </body>
-</body>
-
 </html>

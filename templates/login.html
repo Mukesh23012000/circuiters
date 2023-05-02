@@ -37,7 +37,7 @@
             
         }
         .contact_section input {
-            width: 30%;
+            width: 55%;
         }
     </style>
 </head>
@@ -50,23 +50,24 @@
 {% elif lmsg %}
   <div class="alert alert-success alert-dismissible">
     <a href="" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-    <strong>!</strong>{{lmsg}}.
+    {{lmsg}}.
   </div>
 {% endif %}
-    <center><h1>Circuiters</h1>
+ <div class="text-center">
+    <h1>Circuiters</h1>
     <p>"For all your electrical and electronic device repairs. We offer unbeatable prices with guaranteed top-notch quality."</p>
     <section class="contact_section layout_padding">
-        <div class="fm">
+      <div class="container">
             <form action="" method="post">
                 <h2>Log in</h2>
                 {% csrf_token %}
-                <input type="email" placeholder="Email" name = "email" required/><br>
-                <input type="password" placeholder="Password" name = "pwd" required /><br>
+                <div><input type="email" placeholder="Email" name = "email" required/></div>
+                <div><input type="password" placeholder="Password" name = "pwd" required /></div>
                 <button type="submit">Login</button><br><br>
+            </form>
                 Don't Have Account? <a href="signup">Sign up</a>
-        </one>
-        </div>
+      </div>
     </section>
-    </center>
+  </div>
 </body>
 </html>

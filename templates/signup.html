@@ -37,7 +37,7 @@
             
         }
         .contact_section input {
-            width: 30%;
+            width: 55%;
         }
     </style>
 </head>
@@ -53,23 +53,24 @@
     <strong>!</strong>{{lmsg}}.
   </div>
 {% endif %}
-    <center><h1>Circuiters</h1>
+<div class="text-center">
+    <h1>Circuiters</h1>
     <p>"For all your electrical and electronic device repairs. We offer unbeatable prices with guaranteed top-notch quality."</p>
     <section class="contact_section layout_padding">
-        <div class="fm">
+        <div class="container">
             <form action="" method="post">
                 <h2>Sign up</h2>
                 {% csrf_token %}
-                <input type ="text" placeholder="Name" name ="name" required/><br>
-                <input type="email" placeholder="Email" name = "email" required/><br>
-                <input type="text" placeholder="Phone" name = "phone" required/><br>
-                <input type="password" placeholder="Password" name = "pwd" required /><br>
-                <input type="text" placeholder="Confirm Password" name = "cpwd" required /><br>
+                <div><input type ="text" placeholder="Name" name ="name" required/></div>
+                <div><input type="email" placeholder="Email" name = "email" required/></div>
+                <div><input type="text" placeholder="Phone" name = "phone" required/></div>
+                <div><input type="password" placeholder="Password" name = "pwd" required /></div>
+                <div><input type="text" placeholder="Confirm Password" name = "cpwd" required /></div>
                 <button type="submit">Sign up</button><br><br>
+            </form>
                 Already Have Account? <a href="login">Log in</a>
-        </one>
         </div>
     </section>
-    </center>
+</div>
 </body>
 </html>

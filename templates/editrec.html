@@ -37,7 +37,7 @@
             
         }
         .contact_section input {
-            width: 30%;
+            width: 55%;
         }
     </style>
 </head>
@@ -45,31 +45,40 @@
 {% if lmsg%}
   <div class="alert alert-success alert-dismissible">
     <a href="" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-    <strong>!</strong>{{lmsg}}.
+    {{lmsg}}
   </div>
 {% endif %}
-    <center><h1>Circuiters</h1>
+<div class="text-center">
+    <h1>Circuiters</h1>
     <p>"For all your electrical and electronic device repairs. We offer unbeatable prices with guaranteed top-notch quality."</p>
     <section class="contact_section layout_padding">
-        <div class="fm">
+        <div class="container">
             <form action="" method="post">
                 <h2>Edit Record</h2>
                 
                 {% csrf_token %}
-                <label style="padding-right: 20%;"><b>Device Name </b></label><br>
-                <input type="text" placeholder="Device Name" value= "{{dname}}" name = "dname" required/><br>
-                <label style="padding-right: 20%;"><b>Model Name</b></label><br>
-                <input type="text" placeholder="Model" value = "{{model}}" name = "model" required /><br>
-                <label style="padding-right: 20%;"><b>Your Message</b></label><br>
-                <input type="text" placeholder="Model" value = "{{msg}}" name = "msg" required /><br>
-                <label style="padding-right: 20%;"><b>Your Address</b></label><br>
+                <div>
+                <label><b>Device Name</b></label><br>
+                <input type="text" placeholder="Device Name" value= "{{dname}}" name = "dname" required/>
+                </div>
+                <div>
+                <label><b>Model Name</b></label><br>
+                <input type="text" placeholder="Model" value = "{{model}}" name = "model" required />
+                </div>
+                <div>
+                <label><b>Your Message</b></label><br>
+                <input type="text" placeholder="Message" value = "{{msg}}" name = "msg" required />
+                </div>
+                <div>
+                <label><b>Your Address</b></label><br>
                 <input type="text" placeholder="Address" value = "{{adds}}" name = "adds" required /><br>
-                <button type="submit">Update</button>
+                </div>
+                <button type="submit">Update</button><br><br>
             </form>
         </div>
         Navigate back to <a href="/index" >Home</a>
     </section>
-    </center>
+</div>
     <div class="text-right">
         <a href="/logout" type="button" class="btn btn-danger">Logout</a>
     </div>

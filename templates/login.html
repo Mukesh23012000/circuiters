@@ -44,15 +44,15 @@
 <body>
 {% if msg %}
   <div class="alert alert-danger alert-dismissible">
-    <a href="" class="close" data-dismiss="alert" aria-label="close">&times;</a>
     <strong>Opps !</strong>{{msg}}.
   </div>
-{% elif lmsg %}
+{% endif %}
+{% if lmsg %} 
   <div class="alert alert-success alert-dismissible">
-    <a href="" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-    {{lmsg}}.
+    {{lmsg}}
   </div>
 {% endif %}
+
  <div class="text-center">
     <h1>Circuiters</h1>
     <p>"For all your electrical and electronic device repairs. We offer unbeatable prices with guaranteed top-notch quality."</p>

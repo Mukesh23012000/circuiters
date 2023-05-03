@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Circuiters- Admin</title>
+    <title>Circuiters- Order Details</title>
       <!-- slider stylesheet -->
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.1.3/assets/owl.carousel.min.css'" />
 
@@ -35,6 +35,10 @@
             
             
         }
+        .pagination {
+            display: inline-flex;
+            margin: 0 auto;
+        }
     </style>
 </head>
 <body>
@@ -59,8 +63,9 @@
             <th>Device</th>
             <th>Model</th>
             <th>Message </th>
-            <th>Status</th>
             <th>Address</th>
+            <th>Status</th>
+            <th>Amount</th>
             <th style="text-align: center;">Action</th>
           </tr>
         </thead>
@@ -73,6 +78,7 @@
                 <td>{{i.message}}</td>
                 <td>{{i.adds}}</td>
                 <td>Initiated</td>
+                <td>₹ {{i.aprox}}</td>
                 <td style="text-align: center;"> 
                   <a href="/uedit/{{i.oid}}" class="btn btn-success btn-sm">
                     Edit 
@@ -88,7 +94,12 @@
                 <td>{{i.message}}</td>
                 <td>{{i.adds}}</td>
                 <td>Waiting for product</td>
-                <td style="text-align: center;">No Action</td>
+                <td>₹ {{i.aprox}}</td>
+                <td style="text-align: center;">
+                  <a href="/cancel/{{i.oid}}" class="btn btn-danger btn-sm">
+                    Cancel 
+                  </a>
+                </td>
             </tr>
             {% endif %}
 
@@ -99,6 +110,7 @@
                 <td>{{i.message}}</td>
                 <td>{{i.adds}}</td>
                 <td>Received(Repair inprocess)</td>
+                <td>₹ {{i.aprox}}</td>
                 <td style="text-align: center;">No Action</td>
             </tr>
             {% endif %}
@@ -110,6 +122,19 @@
                 <td>{{i.message}}</td>
                 <td>{{i.adds}}</td>
                 <td>Unable to Repair</td>
+                <td>₹ {{i.aprox}}</td>
+                <td style="text-align: center;">No Action</td>
+            </tr>
+            {% endif %}
+
+            {% if i.status == 'can' %}
+            <tr class="table-danger">
+                <td>{{i.dname}}</td>
+                <td>{{i.model}}</td>
+                <td>{{i.message}}</td>
+                <td>{{i.adds}}</td>
+                <td>Cancelled by User</td>
+                <td>₹ {{i.aprox}}</td>
                 <td style="text-align: center;">No Action</td>
             </tr>
             {% endif %}
@@ -121,6 +146,7 @@
                 <td>{{i.message}}</td>
                 <td>{{i.adds}}</td>
                 <td>Completed</td>
+                <td>₹ {{i.aprox}}</td>
                 <td style="text-align: center;">No Action</td>
             </tr>
             {% endif %}
@@ -132,6 +158,7 @@
                 <td>{{i.message}}</td>
                 <td>{{i.adds}}</td>
                 <td>Rejected</td>
+                <td>₹ {{i.aprox}}</td>
                 <td style="text-align: center;">No Action</td>
             </tr>
             {% endif %}
@@ -139,20 +166,16 @@
           {% endfor %}
         </tbody>
       </table>
-      </div>
-    <div class="container">
-      <div  style ="padding-left: 40%;">
-      <nav aria-label="page">
+      <div class = "text-center">
         <ul class="pagination">
           {% for i in num %}
             <li class="page-item"><a class="page-link" href="/user/{{id}}/{{i}}">{{i}}</a></li>
           {% endfor %}
         </ul>
-      </nav>
-    </div>
-      <div class="text-right">
-        <a href="/logout" type="button" class="btn btn-danger">Logout</a>
+        <div class="text-right">
+          <a href="/logout" type="button" class="btn btn-danger">Logout</a>
+        </div>
       </div>
-    </div>
+      </div>
 </body>
 </html>

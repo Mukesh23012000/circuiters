@@ -336,6 +336,7 @@
         <th>Model</th>
         <th>Address</th>
         <th>Status</th>
+        <th>Amount</th>
         <th style="text-align: center;">Action</th>
       </tr>
     </thead>
@@ -346,7 +347,8 @@
             <td>{{i.device_name}}</td>
             <td>{{i.model}}</td>
             <td>{{i.adds}}</td>
-            <td>Initiated</td>
+            <td data-toggle="tooltip" data-placement="top" title="Your Order is placed and waiting for confirmation. You'll also received mail once confirmed">Initiated</td>
+            <td>₹ {{i.aprox}}</td>
             <td style="text-align: center;"> 
                 <a href="/uedit/{{i.oid}}" class="btn btn-success btn-sm">
                   Edit 
@@ -360,8 +362,13 @@
                 <td>{{i.device_name}}</td>
                 <td>{{i.model}}</td>
                 <td>{{i.adds}}</td>
-                <td>Waiting for product</td>
-                <td style="text-align: center;">No Action</td>
+                <td data-toggle="tooltip" data-placement="top" title="Your Order is accepted by our team. Check your mail and send the product to us " >Waiting for product</td>
+                <td>₹ {{i.aprox}}</td>
+                <td style="text-align: center;">
+                  <a href="/cancel/{{i.oid}}" class="btn btn-danger btn-sm">
+                    Cancel 
+                  </a>
+                </td>
             </tr>
         {% endif %}
 
@@ -370,7 +377,8 @@
                 <td>{{i.device_name}}</td>
                 <td>{{i.model}}</td>
                 <td>{{i.adds}}</td>
-                <td>Received(Repair inprocess)</td>
+                <td data-toggle="tooltip" data-placement="top" title="We Received Your product. You'll receive mail once we completely fix the product">Received(Repair inprocess)</td>
+                <td>₹ {{i.aprox}}</td>
                 <td style="text-align: center;">No Action</td>
             </tr>
         {% endif %}
@@ -380,7 +388,19 @@
                 <td>{{i.device_name}}</td>
                 <td>{{i.model}}</td>
                 <td>{{i.adds}}</td>
-                <td>Unable to Repair</td>
+                <td data-toggle="tooltip" data-placement="top" title="Sorry, Unfortunately we can proceed with your order">Unable to Repair</td>
+                <td>₹ {{i.aprox}}</td>
+                <td style="text-align: center;">No Action</td>
+            </tr>
+        {% endif %}
+
+        {% if i.status == 'can' %}
+            <tr class="table-danger">
+                <td>{{i.device_name}}</td>
+                <td>{{i.model}}</td>
+                <td>{{i.adds}}</td>
+                <td data-toggle="tooltip" data-placement="top" title="it was cancelled by {{value}}">Cancelled by User</td>
+                <td>₹ {{i.aprox}}</td>
                 <td style="text-align: center;">No Action</td>
             </tr>
         {% endif %}
@@ -390,7 +410,8 @@
             <td>{{i.device_name}}</td>
             <td>{{i.model}}</td>
             <td>{{i.adds}}</td>
-            <td>Completed</td>
+            <td data-toggle="tooltip" data-placement="top" title="You're product was fixed and sent to your Address">Completed</td>
+            <td>₹ {{i.aprox}}</td>
             <td style="text-align: center;">No Action </td>
           </tr>
         {% endif %}
@@ -400,7 +421,8 @@
             <td>{{i.device_name}}</td>
             <td>{{i.model}}</td>
             <td>{{i.adds}}</td>
-            <td>Rejected</td>
+            <td data-toggle="tooltip" data-placement="top" title="Sorry, Unfortunately we can proceed with your order">Rejected</td>
+            <td>₹ {{i.aprox}}</td>
             <td style="text-align: center;">No Action</td>
           </tr>
         {% endif %}
@@ -785,6 +807,5 @@
 
     })
   </script>
-
 </body>
 </html>

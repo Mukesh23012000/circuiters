@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Circuiters- Edit-{dname}</title>
+    <title>Circuiters- Accept</title>
       <!-- slider stylesheet -->
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.1.3/assets/owl.carousel.min.css'" />
 
@@ -54,32 +54,31 @@
     <section class="contact_section layout_padding">
         <div class="container">
             <form action="" method="post">
-                <h2>Edit Record</h2>
+                <h2>Accept Form</h2>
                 {% csrf_token %}
                 <div>
                     <label><b>Device Name</b></label><br>
-                    <input type="text" placeholder="Device Name" value= "{{dname}}" name = "dname" required/>
+                    <input type="text" placeholder="Device Name" value= "{{dname}}" name = "dname" disabled/>
                 </div>
                 <div>
                     <label><b>Model Name</b></label><br>
-                    <input type="text" placeholder="Model" value = "{{model}}" name = "model" required />
+                    <input type="text" placeholder="Model" value = "{{model}}" name = "model" disabled />
                 </div>
                 <div>
                     <label><b>Your Message</b></label><br>
-                    <input type="text" placeholder="Message" value = "{{msg}}" name = "msg" required />
+                    <input type="text" placeholder="Message" value = "{{msg}}" name = "msg" disabled />
                 </div>
                 <div>
                     <label><b>Your Address</b></label><br>
-                    <input type="text" placeholder="Address" value = "{{adds}}" name = "adds" required /><br>
+                    <input type="text" placeholder="Address" value = "{{adds}}" name = "adds" disabled /><br>
                 </div>
-                <button type="submit">Update</button>
+                <div>
+                    <label><b>Approximate Amount</b></label><br>
+                    <input type="number" placeholder="Approximate Amount" name = "aprox" required /><br>
+                </div>
+                <button type="submit">Submit</button><br>
             </form>
-            <form action="/cancel/{{oid}}">
-                <button type="submit" style="background-color: Red; color:white">
-                    Cancel Order
-                </button><br><br>
-            </form>
-            Navigate back to <a href="/index" >Home</a>
+            Navigate back to <a href="/admin" >Home</a>
         </div>
         <div class="text-right">
             <a href="/logout" type="button" class="btn btn-danger">Logout</a>

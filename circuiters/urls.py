@@ -37,4 +37,5 @@ urlpatterns = [
     path('com/<int:id>/<int:uid>',views.com),
     path('uedit/<int:id>',views.uedit),
     path('confirm/<str:mail>/<str:msg>',views.confirm),
+    path('cancel/<int:oid>',views.cancel)
 ]

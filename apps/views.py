@@ -111,7 +111,10 @@ def index(request):
             msg = request.session['loginmsg']
         except:
             msg=False
-
+    try:
+        del request.session['lmsg']
+    except Exception as e:
+        print(e)
     if value != False:
         dataBase = dbconnect()
         c = dataBase.cursor()
@@ -132,8 +135,15 @@ def index(request):
                 temp["status"] = t[i][4]
                 temp["adds"] = t[i][7]
                 temp["oid"] = t[i][0]
+                if  t[i][9] == None:
+                    if t[i][8] == None:
+                        temp['aprox'] = " - "
+                    else:
+                        temp["aprox"] = str(t[i][8])+" (approx)"
+                else:
+                    temp["aprox"] = str(t[i][9])
                 data.append(temp)
-                print(data)
+                print(t[i])
         if request.method == 'POST':
             n = request.POST['named']
             model = request.POST['model']
@@ -166,6 +176,10 @@ def signup(request):
         m = request.session['signup']
     except:
         m = False
+    try:
+        del request.session['lmsg']
+    except Exception as e:
+        print(e)
     if request.method == 'POST':
         name = request.POST['name']
         email = request.POST['email']
@@ -316,6 +330,13 @@ def urec(request,id,length):
         temp['status'] = t[i][4]
         temp['adds'] = t[i][7]
         temp['oid'] = t[i][0]
+        if  t[i][9] == None:
+            if t[i][8] == None:
+                temp['aprox'] = " - "
+            else:
+                temp["aprox"] = str(t[i][8])+" (approx)"
+        else:
+            temp["aprox"] = str(t[i][9])
         data.append(temp)
     pg = pag(len(t))
     print(pg)
@@ -382,6 +403,13 @@ def useroders(request,id,length):
         temp['status'] = t[i][4]
         temp['adds'] = t[i][7]
         temp['oderid'] = t[i][0]
+        if  t[i][9] == None:
+            if t[i][8] == None:
+                temp['aprox'] = " - "
+            else:
+                temp["aprox"] = str(t[i][8])+" (approx)"
+        else:
+            temp["aprox"] = str(t[i][9])
         data.append(temp)
     pg = pag(len(t))
     print(pg)
@@ -391,7 +419,51 @@ def accept(request,id,uid):
     v = validate(request)
     if v == False:
         return HttpResponse(f"{code}")
-    
+    dataBase = dbconnect()
+    c = dataBase.cursor()
+    if request.method == 'POST':
+        aprox = request.POST['aprox']
+        sql = f"update details set apx_amount ='{aprox}' where order_id = '{id}';"
+        c.execute(sql)
+        dataBase.commit()
+        accepted(request,id,uid)
+        return redirect(useroders,uid,0)
+    sql = f"select * from details where order_id = '{id}';"
+    c.execute(sql)
+    t = c.fetchall()
+    dname = t[0][1]
+    model = t[0][2]
+    msg = t[0][3]
+    adds = t[0][7]
+    return render(request,"accept.html",{'dname':dname,"model":model,"msg":msg,"adds":adds,'id':id,'uid':uid})
+
+def com(request,id,uid):
+    v = validate(request)
+    if v == False:
+        return HttpResponse(f"{code}")
+    dataBase = dbconnect()
+    c = dataBase.cursor()
+    if request.method == 'POST':
+        amt = request.POST['amt']
+        sql = f"update details set amount ='{amt}' where order_id = '{id}';"
+        c.execute(sql)
+        dataBase.commit()
+        complete(request,id,uid)
+        return redirect(useroders,uid,0)
+    sql = f"select * from details where order_id = '{id}';"
+    c.execute(sql)
+    t = c.fetchall()
+    dname = t[0][1]
+    model = t[0][2]
+    msg = t[0][3]
+    adds = t[0][7]
+    approx = t[0][8]
+    return render(request,"com.html",{'dname':dname,"model":model,"msg":msg,"adds":adds,'approx':approx,'id':id,'uid':uid})
+
+def accepted(request,id,uid):
+    v = validate(request)
+    if v == False:
+        return HttpResponse(f"{code}")
     dataBase = dbconnect()
     c = dataBase.cursor()
     sql = f"update details set flag = 'wp' where order_id = '{id}'; "
@@ -412,7 +484,7 @@ def accept(request,id,uid):
     name = name.replace(" ","")
     message = f"Hi {name},\n\nYour Order id: {id} \nDevice Name: {dname} \nModel: {model} \nMessage: {msk} \n\nThe Above order is accepted by our Technical Team \nKindly send your product to Address:\n{Address} \n\nStatus of the order will be changed to 'Received(repair in process)' once we get your product. \n\nRegards,\nTechnical Team"
     mailsent(subject,message,email)
-    return redirect(useroders,uid,0)
+    #useroders(request,uid,0)
 
 def received(request,id,uid):
     v = validate(request)
@@ -466,6 +538,19 @@ def reject(request,id,uid):
     mailsent(subject,message,email)
     return redirect(useroders,uid,0)
 
+def cancel(request,oid):
+    v = validate(request)
+    if v == False:
+        return HttpResponse(f"{code}")
+    dataBase = dbconnect()
+    c = dataBase.cursor()
+    sql = f"update details set flag = 'can' where order_id = '{oid}';"
+    c.execute(sql)
+    dataBase.commit()
+    request.session['loginmsg'] = "Record Cancelled Succesfully"
+    return redirect(index)
+
+
 def returned(request,id,uid):
     v = validate(request)
     if v == False:
@@ -492,7 +577,7 @@ def returned(request,id,uid):
     mailsent(subject,message,email)
     return redirect(useroders,uid,0)
 
-def com(request,id,uid):
+def complete(request,id,uid):
     v = validate(request)
     if v == False:
         return HttpResponse(f"{code}")
@@ -532,6 +617,7 @@ def uedit(request,id):
     model= t[0][2]
     msg = t[0][3]
     adds = t[0][7]
+    oid = t[0][0]
     lmsg = False
     if request.method =='POST':
         dname = request.POST['dname']
@@ -542,7 +628,7 @@ def uedit(request,id):
         c.execute(sql)
         dataBase.commit()
         lmsg = "Updated Succesfully "
-    return render(request,"editrec.html",{'dname':dname,'model':model,'msg':msg,'adds':adds,'lmsg':lmsg})
+    return render(request,"editrec.html",{'dname':dname,'model':model,'msg':msg,'adds':adds,'lmsg':lmsg,'oid':oid})
 
 def confirm(request,mail,msg):
     dataBase = dbconnect()
